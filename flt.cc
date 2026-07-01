@@ -68,7 +68,7 @@ string fts(uint64_t n){
   uint8_t valuestartpos = (n >> pos_valuestartpos) & size_valuestartpos;
 
   if(dotpos == 0)
-    out += (sign) ? "1." : "0.";
+    out += "0.";
 
   //get number
   while(x != 0){
@@ -92,6 +92,7 @@ string fts(uint64_t n){
     out += "0";
   else if((out.length() - sign) == dotpos)
     out += ".0";
+  else if((out.length() - sign) == dotpos) out += '.';
 
   return out;
 }
@@ -102,7 +103,7 @@ uint64_t fadd(uint64_t a, uint64_t b){
 }
 
 int main(){
-  uint64_t num = stf("-0.0");
+  uint64_t num = stf("-00");
   string s = fts(num);
   cout << s << endl;
   uint64_t num1 = stf(s);
