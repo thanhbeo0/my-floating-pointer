@@ -29,7 +29,7 @@ uint64_t stf(const string& s){
   for(;ptr < s.length(); ptr++){
     char c = s[ptr];
     if(isdigit(c)){
-      if(c == '0' && dotpos < numbercounter) continue;
+      if(c == '0' && dotpos == numbercounter && dotpos != -1) continue;
 
       if(c == '0')
       {
@@ -48,7 +48,7 @@ uint64_t stf(const string& s){
   // set value start pos
   out |= (valuestartpos & size_valuestartpos) << pos_valuestartpos;
 
-  dotpos = (dotpos < 0 ? numbercounter : dotpos) & size_dotpos;
+  dotpos = (dotpos >= 0 ? dotpos : numbercounter) & size_dotpos;
   out |= static_cast<uint64_t>(dotpos) << pos_dotpos;
 
   return out;
@@ -67,7 +67,8 @@ string fts(uint64_t n){
 
   uint8_t valuestartpos = (n >> pos_valuestartpos) & size_valuestartpos;
 
-  if(dotpos == 0) out += "0.";
+  if(dotpos == 0)
+    out += (sign) ? "1." : "0.";
 
   //get number
   while(x != 0){
@@ -89,6 +90,8 @@ string fts(uint64_t n){
 
   if(out[out.length() - sign] == '.')
     out += "0";
+  else if((out.length() - sign) == dotpos)
+    out += ".0";
 
   return out;
 }
@@ -99,8 +102,15 @@ uint64_t fadd(uint64_t a, uint64_t b){
 }
 
 int main(){
-  uint64_t num = stf("0.0000000000000001");
+  uint64_t num = stf("-0.0");
+  string s = fts(num);
+  cout << s << endl;
+  uint64_t num1 = stf(s);
 
-  cout << fts(num) << endl;
+  bitset<64> a(num);
+
+  cout << a << endl;
+
+  cout << fts(num1) << endl;
   return 0;
 }
